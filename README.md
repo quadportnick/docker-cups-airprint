@@ -10,7 +10,7 @@ From the Synology CLI:
 mkdir -p /volume1/docker/build
 cd /volume1/docker/build
 git clone https://github.com/QuadPortNick/cups-airprint
-docker build -t QuadPortNick/cups-airprint .
+docker build -t QuadPortNick/cups-airprint cups-airprint
 
 mkdir -p /volume1/docker/cups-airprint
 docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint:/config -v /etc/avahi/services:/services -p 631:631 QuadPortNick/cups-airprint
