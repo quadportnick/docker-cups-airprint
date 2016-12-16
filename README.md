@@ -18,8 +18,8 @@ CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPA
 
 Once printers are configured, go back and copy the .services files into live Avahi
 ~~~
-rm -rf /etc/avahi/services/Airprint-*.service 
-cp /volume1/docker/cups-airprint/services/* /etc/avahi/services/
+sudo rm -rf /etc/avahi/services/AirPrint-*.service 
+sudo cp /volume1/docker/cups-airprint/services/* /etc/avahi/services/
 ~~~
 
 ## Notes
