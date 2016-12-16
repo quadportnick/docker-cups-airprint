@@ -8,11 +8,19 @@ The Synology's CUPS is turned off and the local Avahi will be utilized for adver
 From the Synology CLI:
 ~~~
 sudo docker pull quadportnick/cups-airprint
-mkdir -p /volume1/docker/cups-airprint
-sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint:/config -v /etc/avahi/services:/services -p 631:631 quadportnick/cups-airprint
+mkdir -p /volume1/docker/cups-airprint/config
+mkdir -p /volume1/docker/cups-airprint/services
+sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint/config:/config -v /volume1/docker/cups-airprint/config:/services -p 631:631 quadportnick/cups-airprint
+sudo docker start cups-airprint
 ~~~
 
-Now set auto-start in the Synology DSM interface and start the container. CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when needed.
+CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when needed. 
+
+Once printers are configured, go back and copy the .services files into live Avahi
+~~~
+rm -rf /etc/avahi/services/Airprint-*.service 
+cp /volume1/docker/cups-airprint/services/* /etc/avahi/services/
+~~~
 
 ## Notes
 * CUPS doesn't like printers.conf being mounted directly as it appears to delete/recreate it with changes, so we copy it in on start and then watch for it to change to make a backup of it.
