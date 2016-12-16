@@ -10,7 +10,7 @@ From the Synology CLI:
 sudo docker pull quadportnick/cups-airprint
 mkdir -p /volume1/docker/cups-airprint/config
 mkdir -p /volume1/docker/cups-airprint/services
-sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint/config:/config -v /volume1/docker/cups-airprint/config:/services -p 631:631 quadportnick/cups-airprint
+sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint/config:/config -v /volume1/docker/cups-airprint/services:/services -p 631:631 quadportnick/cups-airprint
 sudo docker start cups-airprint
 ~~~
 
