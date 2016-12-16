@@ -9,7 +9,7 @@ From the Synology CLI:
 ~~~
 sudo docker pull quadportnick/cups-airprint
 mkdir -p /volume1/docker/cups-airprint
-sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint:/config -v /etc/avahi/services:/services -p 631:631 QuadPortNick/cups-airprint
+sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint:/config -v /etc/avahi/services:/services -p 631:631 quadportnick/cups-airprint
 ~~~
 
 Now set auto-start in the Synology DSM interface and start the container. CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when needed.
