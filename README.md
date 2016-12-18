@@ -1,29 +1,32 @@
 # quadportnick/cups-airprint
-This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint relay for printers that are already on the network but not AirPrint capable. I'm using it on a Synology NAS because for whatever reason the built in functionality is broken. So here we are...
 
-The Synology's CUPS is turned off and the local Avahi will be utilized for advertising the printers on the network.
+This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint relay for printers that are already on the network but not AirPrint capable. I'm using it on a Synology NAS because the built in server doesn't work properly with my printers. The local Avahi will be utilized for advertising the printers on the network.
 
-## Setting it up
+This is also an excuse to dip my toes into GitHub/Docker more, so why not? Hopefully someone else finds this useful.
 
-From the Synology CLI:
-~~~
-sudo docker pull quadportnick/cups-airprint
-mkdir -p /volume1/docker/cups-airprint/config
-mkdir -p /volume1/docker/cups-airprint/services
-sudo docker create --name cups-airprint -e CUPSADMIN=cups -e CUPSPASSWORD=cupZZZ! -v /volume1/docker/cups-airprint/config:/config -v /volume1/docker/cups-airprint/services:/services -p 631:631 quadportnick/cups-airprint
-sudo docker start cups-airprint
-~~~
+## Prereqs
+* No other printers should be shared under Control Panel>External Devices>Printer so that the DSM's CUPS is not running. 
+* `Enable Bonjour service discovery` needs to be marked under Control Panel>Network>DSM Settings 
 
-CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when needed. 
+## Configuration
 
-Once printers are configured, go back and copy the .services files into live Avahi
-~~~
-sudo rm -rf /etc/avahi/services/AirPrint-*.service 
-sudo cp /volume1/docker/cups-airprint/services/* /etc/avahi/services/
-~~~
+### Volumes:
+* `/config`: where the persistent printer configs will be stored
+* `/services`: where the Avahi service files will be generated
+
+### Variables:
+* `CUPSADMIN`: the CUPS admin user you want created
+* `CUPSPASSWORD`: the password for the CUPS admin user
+
+### Ports:
+* `631`: the TCP port for CUPS must be exposed
+
+## Using
+CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when you do something administrative.
+
+If the `/services` volume isn't mapping to `/etc/avahi/services` then you will have to manually copy the .service files to that path at the command line.
 
 ## Notes
-* CUPS doesn't like printers.conf being mounted directly as it appears to delete/recreate it with changes, so we copy it in on start and then watch for it to change to make a backup of it.
-* Watching for the printers.conf file changing also triggers generating the Avahi services. Thanks to @thfontaine for the script! <https://github.com/tjfontaine/airprint-generate>
-
+* CUPS doesn't write out `printers.conf` immediately when making changes even though they're live in CUPS. Therefore it will take a few moments before the services files update
+* Don't stop the container immediately if you intend to have a persistent configuration for this same reason
  
