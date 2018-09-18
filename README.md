@@ -2,7 +2,7 @@
 
 Fork from [quadportnick/cups-airprint](https://github.com/quadportnick/docker-cups-airprint)
 
-This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint relay for printers that are already on the network but not AirPrint capable. I am running this on CentOS. I forked the original to add support for my Brother MFC=7840w printer, and use the latest Ubuntu base.
+This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint relay for printers that are already on the network but not AirPrint capable. I am running this on CentOS. I forked the original to add support for my Brother MFC-7840w printer, and use the latest Ubuntu base.
 
 ## Prereqs
 * Install avahi on local host.
