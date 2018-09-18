@@ -32,7 +32,7 @@ docker run --name cups -p 631:631   --restart unless-stopped  \
 CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD.
 
 ## Install Avahi on local host:
-These commands only work on Red Hat/CentOS/Fedora. Ubuntu will be different.
+These commands only work on RedHat/CentOS/Fedora. Ubuntu will be different.
 ```
 yum install avahi
 systemctl start avahi-daemon
