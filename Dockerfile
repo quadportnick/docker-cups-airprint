@@ -1,16 +1,11 @@
-FROM ubuntu:zesty
+FROM ubuntu:latest
 
 # Add repos
-RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ zesty multiverse' >> /etc/apt/sources.list.d/multiverse.list && \
-	echo 'deb-src http://us.archive.ubuntu.com/ubuntu/ zesty multiverse' >> /etc/apt/sources.list.d/multiverse.list && \
-	echo 'deb http://us.archive.ubuntu.com/ubuntu/ zesty-updates multiverse' >> /etc/apt/sources.list.d/multiverse.list && \
-	echo 'deb-src http://us.archive.ubuntu.com/ubuntu/ zesty-updates multiverse' >> /etc/apt/sources.list.d/multiverse.list && \
-	echo 'deb http://archive.ubuntu.com/ubuntu/ zesty-security multiverse' >> /etc/apt/sources.list.d/multiverse.list && \
-	echo 'deb-src http://archive.ubuntu.com/ubuntu/ zesty-security multiverse' >> /etc/apt/sources.list.d/multiverse.list
+RUN echo 'deb [trusted=yes] http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main contrib main-nonfree' >> /etc/apt/sources.list.d/multiverse.list
 
 # Install the packages we need. Avahi will be included
 RUN apt-get update && apt-get install -y \
-	brother-lpr-drivers-extra brother-cups-wrapper-extra \
+	brother-lpr-drivers-extra brother-cups-wrapper-extra openprinting-ppds-postscript-brother\
 	cups \
 	cups-pdf \
 	inotify-tools \
@@ -27,6 +22,8 @@ VOLUME /services
 # Add scripts
 ADD root /
 RUN chmod +x /root/*
+
+#Run Script
 CMD ["/root/run_cups.sh"]
 
 # Baked-in config file changes
