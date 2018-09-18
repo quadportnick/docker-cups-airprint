@@ -23,6 +23,17 @@ This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint
 ### Ports:
 * `631`: the TCP port for CUPS must be exposed
 
+### Example run command:
+```
+docker run --name cups -p 631:631   --restart unless-stopped  \
+  -v /opt/cups/services:/services \
+  -v /opt/cups/config:/config \
+  -v /var/run/dbus:/var/run/dbus \
+  -e CUPSADMIN="<username>" \
+  -e CUPSPASSWORD="<password>" \
+  chuckcharlie/cups-avahi:latest
+```
+
 ## Using
 CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when you do something administrative.
 
