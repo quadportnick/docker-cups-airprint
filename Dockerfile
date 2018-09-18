@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:bionic
 
 # Add repos
 RUN echo 'deb [trusted=yes] http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main contrib main-nonfree' >> /etc/apt/sources.list.d/multiverse.list
