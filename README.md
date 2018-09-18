@@ -29,7 +29,7 @@ docker run --name cups -p 631:631   --restart unless-stopped  \
 ```
 
 ## Add and set up printer:
-CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD.
+CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
 
 ## Install Avahi on local host:
 These commands only work on RedHat/CentOS/Fedora. Ubuntu will be different.
