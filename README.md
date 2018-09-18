@@ -35,7 +35,7 @@ docker run --name cups -p 631:631   --restart unless-stopped  \
 ```
 
 ## Using
-CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when you do something administrative.
+CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD when you do something administrative.
 
 ## Notes
 * I had to run the [airprint-generate.py](/root/root/airprint-generate.py) script on the local host to get the avahi service file to generate.
