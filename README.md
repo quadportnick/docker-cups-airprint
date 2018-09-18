@@ -28,9 +28,6 @@ docker run --name cups -p 631:631   --restart unless-stopped  \
   chuckcharlie/cups-airprint-brother:latest
 ```
 
-## Add and set up printer:
-CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
-
 ## Install Avahi on local host:
 These commands only work on RedHat/CentOS/Fedora. Ubuntu will be different.
 ```
@@ -40,8 +37,6 @@ systemctl enable avahi-daemon
 ```
 ***This was the only way I was able to get /var/run/dbus to respond correctly in the container.***
 
-## Notes
-I had to run the [airprint-generate.py](/root/root/airprint-generate.py) script on the local host to get the avahi service file to generate.
-```
-python airprint-generate.py -H localhost -p 631 -u admin -d <your services dir>
-```
+## Add and set up printer:
+CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
+
