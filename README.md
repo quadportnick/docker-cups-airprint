@@ -28,5 +28,6 @@ docker run --name cups --restart unless-stopped  --net host\
 ```
 
 ## Add and set up printer:
-CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
+* CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
+* Make sure you select `Share This Printer` when configuring the printer in CUPS.
 
