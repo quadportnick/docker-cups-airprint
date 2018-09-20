@@ -11,7 +11,9 @@ mkdir -p /config/ppd
 mkdir -p /services
 rm -rf /etc/cups/ppd
 ln -s /config/ppd /etc/cups
-cp -f /services/*.service /etc/avahi/services/
+if [ ls /services/*.service ]; then
+	cp -f /services/*.service /etc/avahi/services/
+fi
 if [ ! -f /config/printers.conf ]; then
     touch /config/printers.conf
 fi
