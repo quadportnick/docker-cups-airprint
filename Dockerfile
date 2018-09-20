@@ -17,14 +17,6 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositorie
 	&& pip install pycups \
 	&& rm -rf /var/cache/apk/*
 
-#RUN apt-get update && apt-get install -y \
-#	brother-lpr-drivers-extra brother-cups-wrapper-extra openprinting-ppds-postscript-brother\
-#	cups \
-#	cups-pdf \
-#	inotify-tools \
-#	python-cups \
-#&& rm -rf /var/lib/apt/lists/*
-
 # This will use port 631
 EXPOSE 631
 
