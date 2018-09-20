@@ -1,16 +1,29 @@
-FROM ubuntu:bionic
-
-# Add repos
-RUN echo 'deb [trusted=yes] http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main contrib main-nonfree' >> /etc/apt/sources.list.d/multiverse.list
+FROM alpine:latest
 
 # Install the packages we need. Avahi will be included
-RUN apt-get update && apt-get install -y \
-	brother-lpr-drivers-extra brother-cups-wrapper-extra openprinting-ppds-postscript-brother\
-	cups \
-	cups-pdf \
+RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories &&\
+	apk add --update cups cups-libs cups-pdf cups-client \
+	cups-filters \
+	cups-dev \
+	ghostscript \
+	avahi \
 	inotify-tools \
-	python-cups \
-&& rm -rf /var/lib/apt/lists/*
+	python \
+	python-dev \
+	py-pip \
+	build-base \
+	wget \
+	&& pip --no-cache-dir install --upgrade pip \
+	&& pip install pycups \
+	&& rm -rf /var/cache/apk/*
+
+#RUN apt-get update && apt-get install -y \
+#	brother-lpr-drivers-extra brother-cups-wrapper-extra openprinting-ppds-postscript-brother\
+#	cups \
+#	cups-pdf \
+#	inotify-tools \
+#	python-cups \
+#&& rm -rf /var/lib/apt/lists/*
 
 # This will use port 631
 EXPOSE 631
@@ -35,4 +48,3 @@ RUN sed -i 's/Listen localhost:631/Listen 0.0.0.0:631/' /etc/cups/cupsd.conf && 
 	sed -i 's/.*enable\-dbus=.*/enable\-dbus\=no/' /etc/avahi/avahi-daemon.conf && \
 	echo "ServerAlias *" >> /etc/cups/cupsd.conf && \
 	echo "DefaultEncryption Never" >> /etc/cups/cupsd.conf
-
