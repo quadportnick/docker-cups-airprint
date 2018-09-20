@@ -11,10 +11,12 @@ mkdir -p /config/ppd
 mkdir -p /services
 rm -rf /etc/cups/ppd
 ln -s /config/ppd /etc/cups
+cp -f /services/*.service /etc/avahi/services/
 if [ ! -f /config/printers.conf ]; then
     touch /config/printers.conf
 fi
 cp /config/printers.conf /etc/cups/printers.conf
 
 /root/printer-update.sh &
+/usr/sbin/avahi-daemon &
 exec /usr/sbin/cupsd -f

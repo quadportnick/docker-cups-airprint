@@ -14,28 +14,18 @@ This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint
 * `CUPSADMIN`: the CUPS admin user you want created
 * `CUPSPASSWORD`: the password for the CUPS admin user
 
-### Ports:
-* `631`: the TCP port for CUPS must be exposed
+### Ports/Network:
+* Must be run on host network. This is required to support multicasting which is needed for Airprint.
 
 ### Example run command:
 ```
-docker run --name cups -p 631:631   --restart unless-stopped  \
+docker run --name cups --restart unless-stopped  --net host\
   -v <your services dir>:/services \
   -v <your config dir>:/config \
-  -v /var/run/dbus:/var/run/dbus \
   -e CUPSADMIN="<username>" \
   -e CUPSPASSWORD="<password>" \
   chuckcharlie/cups-airprint-brother:latest
 ```
-
-## Install Avahi on local host:
-These commands only work on RedHat/CentOS/Fedora. Ubuntu will be different.
-```
-yum install avahi
-systemctl start avahi-daemon
-systemctl enable avahi-daemon
-```
-***This was the only way I was able to get /var/run/dbus to respond correctly in the container.***
 
 ## Add and set up printer:
 CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
