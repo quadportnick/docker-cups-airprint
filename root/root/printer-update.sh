@@ -3,10 +3,8 @@
 while read -r directory events filename; do
 	if [ "$filename" = "printers.conf" ]; then
 		rm -rf /services/AirPrint-*.service
-		rm -rf /etc/avahi/services/AirPrint-*.service
 		/root/airprint-generate.py -d /services
 		cp /etc/cups/printers.conf /config/printers.conf
-		cp -f /services/AirPrint-*.service /etc/avahi/services/ &
-		/usr/sbin/avahi-daemon --reload
+		rsync -avh /services/ /etc/avahi/services/
 	fi
 done
