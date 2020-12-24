@@ -11,8 +11,8 @@ This Alpine-based Docker image runs a CUPS instance that is meant as an AirPrint
 * `/services`: where the Avahi service files will be generated
 
 ### Variables:
-* `CUPSADMIN`: the CUPS admin user you want created
-* `CUPSPASSWORD`: the password for the CUPS admin user
+* `CUPSADMIN`: the CUPS admin user you want created - default is CUPSADMIN if unspecified
+* `CUPSPASSWORD`: the password for the CUPS admin user - defualt is admin user if unspecified
 
 ### Ports/Network:
 * Must be run on host network. This is required to support multicasting which is needed for Airprint.
