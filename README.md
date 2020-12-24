@@ -12,9 +12,7 @@ This Alpine-based Docker image runs a CUPS instance that is meant as an AirPrint
 
 ### Variables:
 * `CUPSADMIN`: the CUPS admin user you want created - default is CUPSADMIN if unspecified
-* `CUPSPASSWORD`: the password for the CUPS admin user - defualt is admin user if unspecified
-
-If CUPSADMIN is not set, the default "cupsadmin" will be used. If CUPSPASSWORD is no set, the name of the admin user will be used.
+* `CUPSPASSWORD`: the password for the CUPS admin user - default is admin username if unspecified
 
 ### Ports/Network:
 * Must be run on host network. This is required to support multicasting which is needed for Airprint.
