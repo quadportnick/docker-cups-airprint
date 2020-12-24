@@ -2,6 +2,16 @@
 set -e
 set -x
 
+# Is CUPSADMIN set? If not, set to default
+if [ -z "$CUPSADMIN" ]; then
+    CUPSADMIN="cupsadmin"
+fi
+
+# Is CUPSPASSWORD set? If not, set to $CUPSADMIN
+if [ -z "$CUPSPASSWORD" ]; then
+    CUPSPASSWORD=$CUPSADMIN
+fi
+
 if [ $(grep -ci $CUPSADMIN /etc/shadow) -eq 0 ]; then
     adduser -S -G lpadmin --no-create-home $CUPSADMIN 
 fi

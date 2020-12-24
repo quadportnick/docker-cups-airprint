@@ -8,17 +8,21 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositorie
 	cups-client \
 	cups-filters \
 	cups-dev \
+	gutenprint \
+	gutenprint-libs \
+	gutenprint-doc \
+	gutenprint-cups \
 	ghostscript \
 	avahi \
 	inotify-tools \
-	python \
-	python-dev \
-	py-pip \
+	python3 \
+	python3-dev \
+	py3-pip \
 	build-base \
 	wget \
 	rsync \
-	&& pip --no-cache-dir install --upgrade pip \
-	&& pip install pycups \
+	&& pip3 --no-cache-dir install --upgrade pip \
+	&& pip3 install pycups \
 	&& rm -rf /var/cache/apk/*
 
 # This will use port 631
