@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 # Install the packages we need. Avahi will be included
-RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories &&\
+RUN echo -e "http://nl.alpinelinux.org/alpine/edge/testing\nhttp://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories &&\
 	apk add --update cups \
 	cups-libs \
 	cups-pdf \
@@ -13,6 +13,7 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositorie
 	gutenprint-doc \
 	gutenprint-cups \
 	ghostscript \
+	hplip \
 	avahi \
 	inotify-tools \
 	python3 \
