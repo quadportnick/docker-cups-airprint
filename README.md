@@ -4,6 +4,8 @@ This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint
 
 This is also an excuse to dip my toes into GitHub/Docker more, so why not? Hopefully someone else finds this useful.
 
+Update: Clearly I haven't been maintaining this as I no longer use Synology for printing -- Recommend trying this fork instead: https://github.com/chuckcharlie/cups-avahi-airprint
+
 ## Prereqs
 * No other printers should be shared under Control Panel>External Devices>Printer so that the DSM's CUPS is not running. 
 * `Enable Bonjour service discovery` needs to be marked under Control Panel>Network>DSM Settings 
