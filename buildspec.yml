@@ -1,25 +1,18 @@
 version: 0.2
-
-batch:
-  fast-fail: false
-  build-graph:
-    - identifier: build1
-      env:
-        variables:
-          BUILD_ID: amd64
-          IMAGE_TAG: amd64
-      ignore-failure: false
-      buildspec: amd64.yml
-#    - identifier: build2
-#      buildspec: build2.yml
-#      env:
-#        variables:
-#          BUILD_ID: build2
-#      depend-on:
-#        - build1
-#    - identifier: build3
-#      env:
-#        variables:
-#          BUILD_ID: build3
-#      depend-on:
-#        - build2
+phases:
+    install:
+        commands:
+            - yum update -y
+    pre_build:
+        commands:
+            - echo Logging in to Amazon ECR...
+            - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+    build:
+        commands:
+            - echo Build started on `date`
+            - echo Building the Docker image...          
+            - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+            - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
+    post_build:
+        commands:
+            - echo Build completed on `date`
