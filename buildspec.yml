@@ -6,7 +6,8 @@ batch:
     - identifier: build1
       env:
         variables:
-          BUILD_ID: build1
+          BUILD_ID: amd64
+          IMAGE_TAG: amd64
       ignore-failure: false
       buildspec: amd64.yml
 #    - identifier: build2
