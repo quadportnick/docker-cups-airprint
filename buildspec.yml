@@ -1,6 +1,6 @@
+version: 0.2
 #Generic buildspec file for AWS Codebuild
 #Works for both ARM and AMD builds
-version: 0.2
 env:
   secrets-manager:
     DOCKERHUB_PASS: "/dockerhub/credentials:password"
