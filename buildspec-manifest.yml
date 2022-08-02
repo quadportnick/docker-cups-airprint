@@ -1,6 +1,6 @@
 version: 0.2
-# Based on the Docker documentation, must include the DOCKER_CLI_EXPERIMENTAL environment variable
-# https://docs.docker.com/engine/reference/commandline/manifest/    
+#Buildspec file for AWS Codebuild
+#Generates multi-arch manifest
 
 env:
   secrets-manager:
