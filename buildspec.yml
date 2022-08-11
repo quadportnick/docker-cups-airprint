@@ -5,6 +5,8 @@ env:
   secrets-manager:
     DOCKERHUB_PASS: "/dockerhub/credentials:password"
     DOCKERHUB_USERNAME: "/dockerhub/credentials:username"
+    exported-variables:
+      - VERSION
 phases:
     install:
         commands:
