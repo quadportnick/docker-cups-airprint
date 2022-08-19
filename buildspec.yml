@@ -5,10 +5,6 @@ env:
   secrets-manager:
     DOCKERHUB_PASS: "/dockerhub/credentials:password"
     DOCKERHUB_USERNAME: "/dockerhub/credentials:username"
-#  variables:
-#    VERSION: $(cat version.txt)
-#  exported-variables:
-#    - VERSION
 phases:
     install:
         commands:
@@ -22,10 +18,9 @@ phases:
             - echo Build started on `date`
             - echo Building the Docker image...
             - VERSION=$(cat version.txt)
-            - docker build -t $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION .
-            - docker tag $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$IMAGE_TAG
+            - docker build -t $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION -t $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$IMAGE_TAG .
     post_build:
         commands:
             - echo Build completed on `date`
             - echo Pushing the Docker image...
-            - docker push $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$IMAGE_TAG
+            - docker push $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME --all-tags
