@@ -7,4 +7,7 @@ while read -r directory events filename; do
 		cp /etc/cups/printers.conf /config/printers.conf
 		rsync -avh /services/ /etc/avahi/services/
 	fi
+	if [ "$filename" = "cupsd.conf" ]; then
+		cp /etc/cups/cupsd.conf /config/cupsd.conf
+	fi
 done
