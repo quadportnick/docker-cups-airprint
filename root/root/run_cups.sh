@@ -30,10 +30,10 @@ if [ `ls -l /config/printers.conf 2>/dev/null | wc -l` -eq 0 ]; then
 fi
 cp /config/printers.conf /etc/cups/printers.conf
 
-if [ `ls -l /config/cupsd.conf 2>/dev/null | wc -l` -eq 0 ]; then
-    cp /etc/cups/cupsd.conf /config/cupsd.conf
+if [ `ls -l /config/cupsd.conf 2>/dev/null | wc -l` -ne 0 ]; then
+    cp /config/cupsd.conf /etc/cups/cupsd.conf
 fi
 
 /usr/sbin/avahi-daemon --daemonize
 /root/printer-update.sh &
-exec /usr/sbin/cupsd -f -c /config/cupsd.conf
+exec /usr/sbin/cupsd -f
