@@ -1,0 +1,35 @@
+version: 0.2
+#Buildspec file for AWS Codebuild
+#Generates multi-arch manifest
+
+env:
+  secrets-manager:
+    DOCKERHUB_PASS: "/dockerhub/credentials:password"
+    DOCKERHUB_USERNAME: "/dockerhub/credentials:username"
+phases:
+    install:
+        commands:
+            - yum update -y
+    pre_build:
+        commands:
+            - echo Logging in to DOCKER...
+            - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASS
+    build:
+        commands:
+            - echo Build started on `date`
+            - echo Building the Docker manifest...
+            - VERSION=$(cat version.txt)
+            - export DOCKER_CLI_EXPERIMENTAL=enabled       
+            - docker manifest create $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-arm64 $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-amd64    
+            - docker manifest annotate --arch arm64 $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-arm64
+            - docker manifest annotate --arch amd64 $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-amd64
+            - docker manifest create $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:latest $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-arm64 $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-amd64    
+            - docker manifest annotate --arch arm64 $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-arm64
+            - docker manifest annotate --arch amd64 $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-amd64
+
+    post_build:
+        commands:
+            - echo Build completed on `date`
+            - echo Pushing the Docker image...
+            - docker manifest push $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION
+            - docker manifest push $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:latest

@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  airprint:
+    container_name: airprint
+    image: znetwork/synology-airprint:0.3
+    build: .
+    restart: always
+    network_mode: "host"
+    environment:
+      CUPSADMIN: admin
+      CUPSPASSWORD: admin
+    volumes:
+      - "./services:/services"
+      - "./config:/config"
