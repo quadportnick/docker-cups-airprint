@@ -1,34 +1,56 @@
-# quadportnick/cups-airprint
+# znetwork/cups-avahi-airprint [docker-image](https://hub.docker.com/r/znetwork/synology-airprint)
 
-This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint relay for printers that are already on the network but not AirPrint capable. I'm using it on a Synology NAS because the built in server doesn't work properly with my printers. The local Avahi will be utilized for advertising the printers on the network.
+# Working on Synology DSM 7 (!!!) and AMD64
 
-This is also an excuse to dip my toes into GitHub/Docker more, so why not? Hopefully someone else finds this useful.
+Fork from [quadportnick/docker-cups-airprint](https://github.com/quadportnick/docker-cups-airprint) and [chuckcharlie/docker-cups-airprint](https://github.com/chuckcharlie/docker-cups-airprint)
 
-Update: Clearly I haven't been maintaining this as I no longer use Synology for printing -- Recommend trying this fork instead: https://github.com/chuckcharlie/cups-avahi-airprint
+This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint relay for printers that are already on the network but not AirPrint capable.
+* `Included drivers HP, Samsung, Canon, Xerox, etc.`
 
-## Prereqs
-* No other printers should be shared under Control Panel>External Devices>Printer so that the DSM's CUPS is not running. 
-* `Enable Bonjour service discovery` needs to be marked under Control Panel>Network>DSM Settings 
+## Easy run command (use username and password: admin/admin):
+```docker run --name airprint --restart unless-stopped --net host znetwork/synology-airprint:latest```
 
-## Configuration
+### Before run docker conteiner on DSM7 Synology run this commands in ssh terminal:
+* `sudo synosystemctl stop cupsd`
+* `sudo synosystemctl stop cups-lpd`
+* `sudo synosystemctl stop cups-service-handler`
+* `sudo synosystemctl disable cupsd`
+* `sudo synosystemctl disable cups-lpd`
+* `sudo synosystemctl disable cups-service-handler`
+
+### Add and setup printer:
+* CUPS will be configurable at http://[host ip]:631 using the CUPSADMIN/CUPSPASSWORD.
+* Make sure you select `Share This Printer` when configuring the printer in CUPS.
+* ***After configuring your printer, you need to close the web browser for at least 60 seconds. CUPS will not write the config files until it detects the connection is closed for as long as a minute.***
+
+### After setup and testing AirPrint, you can back run on services. (maybe you will need restart nas)
+* `sudo synosystemctl start cupsd`
+* `sudo synosystemctl start cups-lpd`
+* `sudo synosystemctl start cups-service-handler`
+* `sudo synosystemctl anable cupsd`
+* `sudo synosystemctl anable cups-lpd`
+* `sudo synosystemctl anable cups-service-handler`
+
+## Manual Configuration
 
 ### Volumes:
 * `/config`: where the persistent printer configs will be stored
 * `/services`: where the Avahi service files will be generated
 
 ### Variables:
-* `CUPSADMIN`: the CUPS admin user you want created
-* `CUPSPASSWORD`: the password for the CUPS admin user
+* `CUPSADMIN`: the CUPS admin user you want created - default is `admin` if unspecified
+* `CUPSPASSWORD`: the password for the CUPS admin user - default is `admin` username if unspecified
 
-### Ports:
-* `631`: the TCP port for CUPS must be exposed
+### Ports/Network:
+* Must be run on host network. This is required to support multicasting which is needed for Airprint.
 
-## Using
-CUPS will be configurable at http://[diskstation]:631 using the CUPSADMIN/CUPSPASSWORD when you do something administrative.
 
-If the `/services` volume isn't mapping to `/etc/avahi/services` then you will have to manually copy the .service files to that path at the command line.
-
-## Notes
-* CUPS doesn't write out `printers.conf` immediately when making changes even though they're live in CUPS. Therefore it will take a few moments before the services files update
-* Don't stop the container immediately if you intend to have a persistent configuration for this same reason
- 
+### Example run env command:
+```
+docker run --name cups --restart unless-stopped  --net host\
+  -v <your services dir>:/services \
+  -v <your config dir>:/config \
+  -e CUPSADMIN="<username>" \
+  -e CUPSPASSWORD="<password>" \
+  znetwork/cups-avahi-airprint:latest
+```

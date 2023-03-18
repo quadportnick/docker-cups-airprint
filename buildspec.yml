@@ -1,0 +1,26 @@
+version: 0.2
+#Generic buildspec file for AWS Codebuild
+#Works for both ARM and AMD builds
+env:
+  secrets-manager:
+    DOCKERHUB_PASS: "/dockerhub/credentials:password"
+    DOCKERHUB_USERNAME: "/dockerhub/credentials:username"
+phases:
+    install:
+        commands:
+            - yum update -y
+    pre_build:
+        commands:
+            - echo Logging in to DOCKER...
+            - docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASS
+    build:
+        commands:
+            - echo Build started on `date`
+            - echo Building the Docker image...
+            - VERSION=$(cat version.txt)
+            - docker build -t $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$VERSION-$ARCH -t $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME:$IMAGE_TAG-$ARCH .
+    post_build:
+        commands:
+            - echo Build completed on `date`
+            - echo Pushing the Docker image...
+            - docker push $DOCKERHUB_USERNAME/$IMAGE_REPO_NAME --all-tags
