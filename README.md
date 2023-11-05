@@ -47,10 +47,29 @@ This Ubuntu-based Docker image runs a CUPS instance that is meant as an AirPrint
 
 ### Example run env command:
 ```
-docker run --name cups --restart unless-stopped  --net host\
+docker run --name airprint --restart unless-stopped  --net host\
   -v <your services dir>:/services \
   -v <your config dir>:/config \
   -e CUPSADMIN="<username>" \
   -e CUPSPASSWORD="<password>" \
-  znetwork/cups-avahi-airprint:latest
+  znetwork/synology-airprint:latest
+```
+
+### Example with docker componse:
+```
+version: '3.3'
+services:
+    synology-airprint:
+        container_name: airprint
+        restart: unless-stopped
+        network_mode: host
+        volumes:
+            - '<your services dir>:/services'
+            - '<your config dir>:/config'
+        environment:
+            - CUPSADMIN=<username>
+            - CUPSPASSWORD=<password>
+        ports:
+            - 631:631
+        image: 'znetwork/synology-airprint:latest'
 ```
